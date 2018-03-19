@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.panisme.api1</string>
+	<key>category</key>
+	<string>Internet</string>
+	<key>connections</key>
+	<dict>
+		<key>8969F445-36E5-4136-99A7-B1F4A7CE2590</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>AB74F1E8-EC44-4B82-9363-5CB8D7354849</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>panweiqing</string>
+	<key>description</key>
+	<string>所有查询结果来自于掘金社区,一个专业的技术文章整合社区    -by一位普通用户</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>juejin-掘金</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>jj</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>waiting....</string>
+				<key>script</key>
+				<string>
+require_once('workflows.php');
+
+function get_page_urls($spider_page_result, $base_url)
+{
+    $get_url_result = preg_match_all("/&lt;h2.*?href.*?h2&gt;/", $spider_page_result, $out);
+    if ($get_url_result) {
+        return $out[0];
+    } else {
+        return [];
+    }
+}
+
+
+$wf = new Workflows();
+$orig = "{query}";
+//$orig = "route";
+$json = $wf-&gt;request("https://search-merger-ms.juejin.im/v1/search?query=".urlencode(trim($orig))."&amp;raw_result=false&amp;src=web");
+$arr = json_decode($json,true);
+
+if (count($arr['d']) &gt; 0) {
+    $i=0;
+    foreach ($arr['d'] as $k =&gt; $v) {
+		$url = $v['originalUrl'];
+		$title = $v['title'];
+		$desc = $v['content'];
+		$desc = $v['content'];
+
+		if(isset($v['title'])){
+			$wf-&gt;result($i.'.'.time(), "$url", "$title", "$desc", 'icon.png');
+        		$i++;
+		}
+        
+    }
+	$origin_url = "https://juejin.im/search?query=".urlencode(trim($orig));
+    $wf-&gt;result('999', "$origin_url", "more", '', '');
+
+} else {
+    
+}
+echo $wf-&gt;toxml();
+
+
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>juejin-专业技术文章社区</string>
+				<key>title</key>
+				<string>juejin</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>8969F445-36E5-4136-99A7-B1F4A7CE2590</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>AB74F1E8-EC44-4B82-9363-5CB8D7354849</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Quick view lumen manual</string>
+	<key>uidata</key>
+	<dict>
+		<key>8969F445-36E5-4136-99A7-B1F4A7CE2590</key>
+		<dict>
+			<key>xpos</key>
+			<integer>60</integer>
+			<key>ypos</key>
+			<integer>140</integer>
+		</dict>
+		<key>AB74F1E8-EC44-4B82-9363-5CB8D7354849</key>
+		<dict>
+			<key>xpos</key>
+			<integer>440</integer>
+			<key>ypos</key>
+			<integer>190</integer>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>http://panisme.com</string>
+</dict>
+</plist>

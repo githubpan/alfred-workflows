@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.panisme.api</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>A452623E-ABC3-49A6-803A-3DDED1E77964</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>4548FF31-37C3-403B-9F7C-F47CC62907D6</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>panweiqing</string>
+	<key>description</key>
+	<string>快速查询</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>laravel-manual</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>100</integer>
+				<key>keyword</key>
+				<string>lm</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>waiting...</string>
+				<key>script</key>
+				<string>require_once('workflows.php');
+
+function get_page_urls($spider_page_result, $base_url)
+{
+    $get_url_result = preg_match_all("/&lt;h2.*?href.*?h2&gt;/", $spider_page_result, $out);
+    if ($get_url_result) {
+        return $out[0];
+    } else {
+        return [];
+    }
+}
+
+
+$wf = new Workflows();
+$orig = "{query}";
+//$orig = "route";
+$xml = $wf-&gt;request("http://laravelacademy.org/?s=" . trim($orig));
+
+$preg = get_page_urls($xml, 'http://laravelacademy.org');
+// var_dump($preg);
+if (count($preg) &gt; 0) {
+    $i=0;
+    foreach ($preg as $k =&gt; $v) {
+        preg_match_all("/href=\"([^\s&gt;]+)\"/", $v, $out);
+        $url = $out[1][0];
+        preg_match_all("/href=\"[^\"]*\"[^&gt;]*&gt;(.*?)&lt;\/a&gt;/", $v, $out2);
+        $title = $out2[1][0];
+        $wf-&gt;result($i.'.'.time(), "$url", "$title", '查看', 'icon.png');
+        $i++;
+    }
+    $wf-&gt;result('999', "", "more", '', '');
+
+} else {
+    //$wf-&gt;result('lumen', $orig, 'No Result', 'No search suggestions found. Search Google for ' . $orig, 'icon.png');
+}
+echo $wf-&gt;toxml();
+
+
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>Laravel/Lumen手册查询</string>
+				<key>title</key>
+				<string>Laravel手册查询</string>
+				<key>type</key>
+				<integer>1</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>A452623E-ABC3-49A6-803A-3DDED1E77964</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>4548FF31-37C3-403B-9F7C-F47CC62907D6</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Quick view lumen manual</string>
+	<key>uidata</key>
+	<dict>
+		<key>4548FF31-37C3-403B-9F7C-F47CC62907D6</key>
+		<dict>
+			<key>xpos</key>
+			<integer>390</integer>
+			<key>ypos</key>
+			<integer>210</integer>
+		</dict>
+		<key>A452623E-ABC3-49A6-803A-3DDED1E77964</key>
+		<dict>
+			<key>xpos</key>
+			<integer>110</integer>
+			<key>ypos</key>
+			<integer>40</integer>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>http://panisme.com</string>
+</dict>
+</plist>
