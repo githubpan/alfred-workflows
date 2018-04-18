@@ -1,4 +1,4 @@
-#   alfred-workflows
+#   alfred-workflows -test
 
 ####    自己开发的一些常用的 alfred workflows 插件
 
